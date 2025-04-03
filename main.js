@@ -13,6 +13,7 @@ class Draggable {
         this.element.addEventListener('mousedown', (ev) => this.mouseDown(ev));
         this.element.addEventListener('mouseup', () => this.mouseUp());
         this.element.addEventListener('mousemove', (ev) => this.mouseMove(ev));
+        this.element.style.zIndex = 1;
 
         const mouseX = e.clientX;
         const mouseY = e.clientY;
@@ -39,27 +40,18 @@ class Draggable {
         const position = this.element.getBoundingClientRect();
         this.mouseOffsetX = e.clientX - position.left;
         this.mouseOffsetY = e.clientY - position.top;
-        console.log('mousedown');
+        this.element.style.zIndex = 1;
     }
 
     mouseUp() {
         this.isDragged = false;
-        console.log('mouseup');
+        this.element.style.zIndex = 0;
     };
 
     mouseMove(e) {
         if(this.isDragged) {
             let mouseX = e.clientX;
             let mouseY = e.clientY;
-            let position = e.target.getBoundingClientRect();
-            
-            console.log('---');
-            
-            console.log(mouseX + '  ' + mouseY);
-            console.log( this.mouseOffsetX + '  ' +  this.mouseOffsetY);
-            console.log(mouseY - this.mouseOffsetY);
-            console.log(mouseX - this.mouseOffsetX);
-            
             $(this.element).css('top', mouseY - this.mouseOffsetY);
             $(this.element).css('left', mouseX - this.mouseOffsetX);
         }
