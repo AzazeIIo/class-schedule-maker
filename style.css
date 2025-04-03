@@ -9,11 +9,13 @@
 }
 
 #schedule .row .col-2 {
-    background-color: #2e76b9;
-    border: 1px solid black;
     height: 4vh;
     width: 10vw;
+}
 
+.schoolPeriod {
+    background-color: #2e76b9;
+    border: 1px solid black;
 }
 
 #classes .row .col-2 {

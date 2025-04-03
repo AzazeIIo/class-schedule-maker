@@ -1,3 +1,5 @@
+import { Droppable } from "./droppable.js";
+
 export class Draggable {
     isDragged;
     mouseOffsetX;
@@ -5,27 +7,23 @@ export class Draggable {
     element;
     
     constructor(e) {
-        const elem = e.target;
-        const position = elem.getBoundingClientRect();
-
-        this.isDragged = true;
-        this.element = this.clone(elem, position);
+        this.element = this.clone(e);
         this.element.addEventListener('mousedown', (ev) => this.mouseDown(ev));
         this.element.addEventListener('mouseup', () => this.mouseUp());
         this.element.addEventListener('mousemove', (ev) => this.mouseMove(ev));
+        this.isDragged = true;
         this.element.style.zIndex = 1;
-
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
-        this.mouseOffsetX = mouseX - position.left;
-        this.mouseOffsetY = mouseY - position.top;
+        this.mouseOffsetX = e.offsetX;
+        this.mouseOffsetY = e.offsetY;
     }
 
-    clone(elem, pos) {
+    clone(e) {
+        const elem = e.target;
         const draggableElement = elem.cloneNode();
+        const rect = elem.getBoundingClientRect();
         draggableElement.style.position = 'absolute';
-        draggableElement.style.top = pos.top+'px';
-        draggableElement.style.left = pos.left+'px';
+        draggableElement.style.left = rect.left+'px';
+        draggableElement.style.top = rect.top+'px';
         draggableElement.style.backgroundColor = 'red';
         elem.after(draggableElement);
 
@@ -34,23 +32,32 @@ export class Draggable {
     
     mouseDown(e) {
         this.isDragged = true;
-        const position = this.element.getBoundingClientRect();
-        this.mouseOffsetX = e.clientX - position.left;
-        this.mouseOffsetY = e.clientY - position.top;
+        this.mouseOffsetX = e.offsetX;
+        this.mouseOffsetY = e.offsetY;
         this.element.style.zIndex = 1;
     }
 
     mouseUp() {
         this.isDragged = false;
         this.element.style.zIndex = 0;
+
+        const rect = this.element.getBoundingClientRect();
+        const centerX = rect.left + this.element.offsetWidth/2;
+        const centerY = rect.top + this.element.offsetHeight/2;
+
+        const mouseElements = document.elementsFromPoint(centerX, centerY);
+        
+        Droppable.elements.forEach(element => {
+            if(mouseElements.includes(element)) {
+                console.log(element);
+            }
+        });
     };
 
     mouseMove(e) {
         if(this.isDragged) {
-            let mouseX = e.clientX;
-            let mouseY = e.clientY;
-            $(this.element).css('top', mouseY - this.mouseOffsetY);
-            $(this.element).css('left', mouseX - this.mouseOffsetX);
+            $(this.element).css('left', e.clientX - this.mouseOffsetX);
+            $(this.element).css('top', e.clientY - this.mouseOffsetY);
         }
     };
 }
