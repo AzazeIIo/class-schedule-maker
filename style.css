@@ -1,0 +1,24 @@
+#schedule {
+    text-align: center;
+    margin-bottom: 3vh;
+}
+
+#classes {
+    background-color: rgb(130, 219, 190);
+    text-align: center;
+}
+
+#schedule .row .col-2 {
+    background-color: #2e76b9;
+    border: 1px solid black;
+    height: 4vh;
+    width: 10vw;
+
+}
+
+#classes .row .col-2 {
+    background-color: #b83f5d;
+    border: 1px solid black;
+    height: 4vh;
+    width: 10vw;
+}
