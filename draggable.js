@@ -53,8 +53,13 @@ export class Draggable {
         const mouseElements = document.elementsFromPoint(centerX, centerY);
         
         for (const elem of mouseElements) {
-            if(Droppable.elements.includes(elem)) {
-                return this.dropping(elem);
+            if(Droppable.elements.includes(elem) ) {
+                if(elem.occupied) {
+                    return this.cancelling();
+                } else {
+                    elem.occupied = true;
+                    return this.dropping(elem);
+                }
             }
         }
         return this.cancelling();
@@ -64,8 +69,6 @@ export class Draggable {
         if(this.isDragged) {
             this.element.style.left = (e.clientX - this.mouseOffsetX) + 'px';
             this.element.style.top = (e.clientY - this.mouseOffsetY) + 'px';
-            console.log(this.originalPosX);
-            
         }
     };
 
