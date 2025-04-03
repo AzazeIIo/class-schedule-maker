@@ -7,6 +7,7 @@ export class Draggable {
     originalPosX;
     originalPosY;
     element;
+    parentDroppable;
     
     constructor(e) {
         this.element = this.clone(e);
@@ -56,10 +57,13 @@ export class Draggable {
             if(Droppable.elements.includes(elem) ) {
                 if(elem.occupied) {
                     return this.cancelling();
-                } else {
-                    elem.occupied = true;
-                    return this.dropping(elem);
                 }
+                if(this.parentDroppable) {
+                    this.parentDroppable.occupied = false;
+                }
+                this.parentDroppable = elem;
+                elem.occupied = true;
+                return this.dropping(elem);
             }
         }
         return this.cancelling();
@@ -90,9 +94,7 @@ export class Draggable {
     }
 
     finishedAnimation(draggable) {
-        console.log(draggable);
         draggable.isDragged = false;
         draggable.element.style.zIndex = 0;
-        console.log('finished');
     }
 }
