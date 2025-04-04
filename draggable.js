@@ -7,6 +7,8 @@ export class Draggable {
     mouseOffsetY;
     originalPosX;
     originalPosY;
+    schedulePosX;
+    schedulePosY;
     element;
     parentDroppable;
     
@@ -40,8 +42,6 @@ export class Draggable {
             Draggable.currentlyDragged = this;
             this.mouseOffsetX = e.offsetX;
             this.mouseOffsetY = e.offsetY;
-            this.originalPosX = this.element.style.left;
-            this.originalPosY = this.element.style.top;
             this.element.style.zIndex = 1;
         }
     }
@@ -56,7 +56,7 @@ export class Draggable {
         for (const elem of mouseElements) {
             if(Droppable.elements.includes(elem) ) {
                 if(elem.occupied) {
-                    return this.cancelling();
+                    return this.cancelling(true);
                 }
                 if(this.parentDroppable) {
                     this.parentDroppable.occupied = false;
@@ -66,7 +66,7 @@ export class Draggable {
                 return this.dropping(elem);
             }
         }
-        return this.cancelling();
+        return this.cancelling(false);
     };
 
     static mouseMove(e) {
@@ -77,22 +77,43 @@ export class Draggable {
     dropping(elem) {
         const draggable = this;
         const rect = elem.getBoundingClientRect();
+        this.schedulePosX = rect.left;
+        this.schedulePosY = rect.top;
         $(this.element).animate({
             left: rect.left + 'px',
             top: rect.top + 'px'
-        }, 150, "swing", function() {draggable.finishedAnimation(draggable);});
+        }, 150, "swing", function() {
+            draggable.finishedAnimation(draggable, false);
+        });
     }
 
-    cancelling() {
+    cancelling(insideSchedule) {
         const draggable = this;
-        $(this.element).animate({
-            left: this.originalPosX,
-            top: this.originalPosY
-        }, 500, "swing", function() {draggable.finishedAnimation(draggable);});
+        if(this.parentDroppable && insideSchedule) {
+            $(this.element).animate({
+                left: this.schedulePosX,
+                top: this.schedulePosY
+            }, 500, "swing", function() {
+                draggable.finishedAnimation(draggable, false);
+            });
+        } else {
+            $(this.element).animate({
+                left: this.originalPosX,
+                top: this.originalPosY
+            }, 500, "swing", function() {
+                draggable.finishedAnimation(draggable, true);
+            });
+        }
     }
 
-    finishedAnimation(draggable) {
+    finishedAnimation(draggable, destroy) {
         Draggable.currentlyDragged = null;
         draggable.element.style.zIndex = 0;
+        if (destroy) {
+            if (this.parentDroppable) {
+                this.parentDroppable.occupied = false;
+            }
+            $(this.element).remove();
+        }
     }
 }
