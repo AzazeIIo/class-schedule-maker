@@ -1,7 +1,8 @@
 import { Droppable } from "./droppable.js";
 
 export class Draggable {
-    isDragged;
+    static currentlyDragged;
+
     mouseOffsetX;
     mouseOffsetY;
     originalPosX;
@@ -13,8 +14,7 @@ export class Draggable {
         this.element = this.clone(e);
         this.element.addEventListener('mousedown', (ev) => this.mouseDown(ev));
         this.element.addEventListener('mouseup', () => this.mouseUp());
-        this.element.addEventListener('mousemove', (ev) => this.mouseMove(ev));
-        this.isDragged = true;
+        Draggable.currentlyDragged = this;
         this.element.style.zIndex = 1;
         this.mouseOffsetX = e.offsetX;
         this.mouseOffsetY = e.offsetY;
@@ -37,7 +37,7 @@ export class Draggable {
     
     mouseDown(e) {
         if (e.button == 0) {
-            this.isDragged = true;
+            Draggable.currentlyDragged = this;
             this.mouseOffsetX = e.offsetX;
             this.mouseOffsetY = e.offsetY;
             this.originalPosX = this.element.style.left;
@@ -69,11 +69,9 @@ export class Draggable {
         return this.cancelling();
     };
 
-    mouseMove(e) {
-        if(this.isDragged) {
-            this.element.style.left = (e.clientX - this.mouseOffsetX) + 'px';
-            this.element.style.top = (e.clientY - this.mouseOffsetY) + 'px';
-        }
+    static mouseMove(e) {
+        Draggable.currentlyDragged.element.style.left = (e.clientX - Draggable.currentlyDragged.mouseOffsetX) + 'px';
+        Draggable.currentlyDragged.element.style.top = (e.clientY - Draggable.currentlyDragged.mouseOffsetY) + 'px';
     };
 
     dropping(elem) {
@@ -94,7 +92,7 @@ export class Draggable {
     }
 
     finishedAnimation(draggable) {
-        draggable.isDragged = false;
+        Draggable.currentlyDragged = null;
         draggable.element.style.zIndex = 0;
     }
 }
