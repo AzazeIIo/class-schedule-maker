@@ -8,6 +8,48 @@
     text-align: center;
 }
 
+@keyframes glow-green {
+    0% {
+      box-shadow: 0 0 0 0 #169b18;
+    }
+    25% {
+      box-shadow: 0 0 10px 10px #169b18;
+    }
+    75% {
+        box-shadow: 0 0 10px 10px #169b18;
+    }
+    100% {
+        box-shadow: 0 0 0 0 #169b18;
+    }
+}
+
+@keyframes glow-red {
+    0% {
+      box-shadow: 0 0 0 0 #c93025;
+    }
+    25% {
+      box-shadow: 0 0 10px 10px #c93025;
+    }
+    75% {
+        box-shadow: 0 0 10px 10px #c93025;
+    }
+    100% {
+        box-shadow: 0 0 0 0 #c93025;
+    }
+}
+
+.glowGreen {
+    animation-name: glow-green;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+}
+
+.glowRed {
+    animation-name: glow-red;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+}
+
 #schedule .row .col-2 {
     height: 4vh;
     width: 10vw;
