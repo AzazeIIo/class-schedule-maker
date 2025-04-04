@@ -2,14 +2,18 @@ import { Droppable } from "./droppable.js";
 
 export class Draggable {
     static currentlyDragged;
+    static parentOffsetX;
+    static parentOffsetY;
 
+    element;
     mouseOffsetX;
     mouseOffsetY;
     originalPosX;
     originalPosY;
     schedulePosX;
     schedulePosY;
-    element;
+    relativeOffsetX;
+    relativeOffsetY;
     parentDroppable;
     
     constructor(e) {
@@ -20,17 +24,25 @@ export class Draggable {
         this.element.style.zIndex = 1;
         this.mouseOffsetX = e.offsetX;
         this.mouseOffsetY = e.offsetY;
-        this.originalPosX = this.element.style.left;
-        this.originalPosY = this.element.style.top;
+        
+        this.element.style.left = this.relativeOffsetX + 'px';
+        this.element.style.top = this.relativeOffsetY + 'px';
+        
+        this.originalPosX = this.element.offsetLeft + 'px';
+        this.originalPosY = this.element.offsetTop + 'px';
     }
 
     clone(e) {
         const elem = e.target;
-        const draggableElement = elem.cloneNode();
-        const rect = elem.getBoundingClientRect();
+        const rect = elem.parentElement.parentElement.getBoundingClientRect();
+        
+        Draggable.parentOffsetX = rect.left;
+        Draggable.parentOffsetY = rect.top;
+        this.relativeOffsetX = elem.offsetLeft;
+        this.relativeOffsetY = elem.offsetTop;
+        
+        const draggableElement = elem.cloneNode(true);
         draggableElement.style.position = 'absolute';
-        draggableElement.style.left = rect.left+'px';
-        draggableElement.style.top = rect.top+'px';
         elem.after(draggableElement);
 
         return draggableElement;
@@ -71,18 +83,25 @@ export class Draggable {
     };
 
     static mouseMove(e) {
-        Draggable.currentlyDragged.element.style.left = (e.clientX - Draggable.currentlyDragged.mouseOffsetX) + 'px';
-        Draggable.currentlyDragged.element.style.top = (e.clientY - Draggable.currentlyDragged.mouseOffsetY) + 'px';
+        const draggable = Draggable.currentlyDragged;
+        const rect = draggable.element.parentElement.parentElement.getBoundingClientRect();
+
+        Draggable.parentOffsetX = rect.left;
+        Draggable.parentOffsetY = rect.top;
+        
+        draggable.element.style.left = e.clientX - draggable.mouseOffsetX - Draggable.parentOffsetX + 'px';
+        draggable.element.style.top = e.clientY - draggable.mouseOffsetY - Draggable.parentOffsetY + 'px';
     };
 
     dropping(elem) {
         const draggable = this;
         const rect = elem.getBoundingClientRect();
-        this.schedulePosX = rect.left;
-        this.schedulePosY = rect.top;
+        
+        this.schedulePosX = rect.left - Draggable.parentOffsetX;
+        this.schedulePosY = rect.top - Draggable.parentOffsetY;
         $(this.element).animate({
-            left: rect.left + 'px',
-            top: rect.top + 'px'
+            left: this.schedulePosX,
+            top: this.schedulePosY
         }, 150, "swing", function() {
             draggable.finishedAnimation(draggable, true, false);
         });

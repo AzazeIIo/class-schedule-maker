@@ -4,8 +4,8 @@
 }
 
 #classes {
-    background-color: rgb(130, 219, 190);
     text-align: center;
+    position: relative;
 }
 
 @keyframes glow-green {
@@ -50,19 +50,27 @@
     animation-iteration-count: 1;
 }
 
-#schedule .row .col-2 {
-    height: 4vh;
-    width: 10vw;
-}
-
 .schoolPeriod {
     background-color: #2e76b9;
     border: 1px solid black;
 }
 
-#classes .row .col-2 {
+.classCard {
     background-color: #b83f5d;
     border: 1px solid black;
+    line-height: 90%;
+    border-radius: 5px;
+}
+
+.col-2 {
+    font-size: clamp(0.7rem, 2vw, 1rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 4vh;
-    width: 10vw;
+    min-height: 2rem;
+}
+
+.time {
+    justify-content: end;
 }
