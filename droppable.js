@@ -28,6 +28,16 @@ export class Droppable {
             draggables.push(instance.childDraggable);
         });
 
-        localStorage.setItem("schedule", JSON.stringify(draggables));
+        localStorage.setItem('schedule', JSON.stringify(draggables));
+    }
+
+    static delete() {
+        localStorage.removeItem('schedule');
+
+        Droppable.instances.forEach(instance => {
+            instance.occupied = false;
+            instance.childDraggable = null;
+            instance.element.innerHTML = '';
+        });
     }
 }

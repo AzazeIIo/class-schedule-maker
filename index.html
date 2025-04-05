@@ -8,7 +8,7 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-    <div class="text-center m-4">
+    <div class="text-center m-3">
         <h1>Class Schedule Maker</h1>
     </div>
 
@@ -87,49 +87,114 @@
     </div>
     
     <div id="classes" class="container">
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-2"></div>
-            <div id="geo" class="col-2 classCard">Geography</div>
-            <div id="chem" class="col-2 classCard">Chemistry</div>
-            <div id="bio" class="col-2 classCard">Biology</div>
-            <div id="history" class="col-2 classCard">History</div>
-            <div id="art" class="col-2 classCard">Art</div>
+            <div id="geo" class="col-2">
+                <div class="classCard shadow-sm">Geography</div>
+            </div>
+            <div id="chem" class="col-2">
+                <div class="classCard shadow-sm">Chemistry</div>
+            </div>
+            <div id="bio" class="col-2">
+                <div class="classCard shadow-sm">Biology</div>
+            </div>
+            <div id="history" class="col-2">
+                <div class="classCard shadow-sm">History</div>
+            </div>
+            <div id="art" class="col-2">
+                <div class="classCard shadow-sm">Art</div>
+            </div>
         </div>
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-2"></div>
-            <div id="music" class="col-2 classCard">Music</div>
-            <div id="pe" class="col-2 classCard">P.E.</div>
-            <div id="maths" class="col-2 classCard">Maths</div>
-            <div id="cs" class="col-2 classCard">Computer Science</div>
-            <div id="health" class="col-2 classCard">Health</div>
+            <div id="music" class="col-2">
+                <div class="classCard shadow-sm">Music</div>
+            </div>
+            <div id="pe" class="col-2">
+                <div class="classCard shadow-sm">P.E.</div>
+            </div>
+            <div id="maths" class="col-2">
+                <div class="classCard shadow-sm">Maths</div>
+            </div>
+            <div id="cs" class="col-2">
+                <div class="classCard shadow-sm">Computer Science</div>
+            </div>
+            <div id="health" class="col-2">
+                <div class="classCard shadow-sm">Health</div>
+            </div>
         </div>
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-2"></div>
-            <div id="read" class="col-2 classCard">Reading</div>
-            <div id="spell" class="col-2 classCard">Spelling</div>
-            <div id="write" class="col-2 classCard">Writing</div>
-            <div id="grammar" class="col-2 classCard">Grammar</div>
-            <div id="lit" class="col-2 classCard">Literature</div>
+            <div id="music" class="col-2">
+                <div class="classCard shadow-sm">Reading</div>
+            </div>
+            <div id="pe" class="col-2">
+                <div class="classCard shadow-sm">Spelling</div>
+            </div>
+            <div id="maths" class="col-2">
+                <div class="classCard shadow-sm">Writing</div>
+            </div>
+            <div id="cs" class="col-2">
+                <div class="classCard shadow-sm">Grammar</div>
+            </div>
+            <div id="health" class="col-2">
+                <div class="classCard shadow-sm">Literature</div>
+            </div>
         </div>
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-2"></div>
-            <div id="phys" class="col-2 classCard">Physics</div>
-            <div id="social" class="col-2 classCard">Social Studies</div>
-            <div id="spanish" class="col-2 classCard">Spanish</div>
-            <div id="french" class="col-2 classCard">French</div>
-            <div id="sci" class="col-2 classCard">Science</div>
+            <div id="music" class="col-2">
+                <div class="classCard shadow-sm">Physics</div>
+            </div>
+            <div id="pe" class="col-2">
+                <div class="classCard shadow-sm">Social Studies</div>
+            </div>
+            <div id="maths" class="col-2">
+                <div class="classCard shadow-sm">Spanish</div>
+            </div>
+            <div id="cs" class="col-2">
+                <div class="classCard shadow-sm">French</div>
+            </div>
+            <div id="health" class="col-2">
+                <div class="classCard shadow-sm">Science</div>
+            </div>
         </div>
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-2"></div>
-            <div id="eng" class="col-2 classCard">English</div>
-            <div id="tech" class="col-2 classCard">Technology</div>
-            <div id="algebra" class="col-2 classCard">Algebra</div>
-            <div id="geometry" class="col-2 classCard">Geometry</div>
+            <div id="music" class="col-2">
+                <div class="classCard shadow-sm">English</div>
+            </div>
+            <div id="pe" class="col-2">
+                <div class="classCard shadow-sm">Technology</div>
+            </div>
+            <div id="maths" class="col-2">
+                <div class="classCard shadow-sm">Albegra</div>
+            </div>
+            <div id="cs" class="col-2">
+                <div class="classCard shadow-sm">Geometry</div>
+            </div>
         </div>
     </div>
     <div id="buttons">
-        <button id="resetBtn" class="btn btn-danger">Reset</button>
+        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
         <button id="saveBtn" class="btn btn-primary">Save</button>
+    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteModalLabel">Delete schedule</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete your schedule? It cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="deleteBtn" type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

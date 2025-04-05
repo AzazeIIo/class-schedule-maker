@@ -22,12 +22,13 @@ export class Draggable {
             this.element.addEventListener('mouseup', (ev) => this.mouseUp(ev));
             this.parentDroppable = droppable;
             $(this.parentDroppable.element).append(this.element);
-            this.element.style.width = '100%';
-            this.element.style.left = 0;
+            this.element.style.width = '85%';
+            this.element.style.left = 'calc(var(--bs-gutter-x) * .5)';
             this.element.style.top = 0;
+            return this.element.id;
         } else {
             if(e.button == 0 && !Draggable.animationPlaying) {
-                this.original = e.target;
+                this.original = e.target.parentElement;
                 
                 this.element = Draggable.clone(this.original);
                 this.element.addEventListener('mousedown', (ev) => this.mouseDown(ev));
@@ -39,11 +40,10 @@ export class Draggable {
                 
                 this.element.style.left = this.original.offsetLeft + 'px';
                 this.element.style.top = this.original.offsetTop + 'px';
-                this.element.style.zIndex = 1;
-                this.element.style.transform = 'scale(110%)';
+                this.element.style.zIndex = 2;
+                this.element.style.transform = 'scale(115%)';
             }
         }
-        return this.element.id;
     }
 
     static clone(target) {
@@ -70,8 +70,8 @@ export class Draggable {
             this.element.style.left = this.schedulePosX + 'px';
             this.element.style.top = this.schedulePosY + 'px';
             this.element.style.width = '16.66666667%';
-            this.element.style.zIndex = 1;
-            this.element.style.transform = 'scale(110%)';
+            this.element.style.zIndex = 2;
+            this.element.style.transform = 'scale(115%)';
         } else if (e.button == 2 && Draggable.currentlyDragged) {
             Draggable.currentlyDragged.cancelling(false);
         }
@@ -175,10 +175,10 @@ export class Draggable {
             this.element.addEventListener('animationend', () => {
                 this.element.classList.remove('glowGreen')
                 $(this.parentDroppable.element).append(this.element);
-                this.element.style.width = '100%';
-                this.element.style.left = 0;
+                this.element.style.width = '85%';
+                this.element.style.left = 'calc(var(--bs-gutter-x) * .5)';
                 this.element.style.top = 0;
-                draggable.element.style.zIndex = 0;
+                draggable.element.style.zIndex = 1;
                 Draggable.animationPlaying = false;
             });
         } else {
@@ -193,10 +193,10 @@ export class Draggable {
                 } else {
                     this.element.classList.remove('glowRed');
                     $(this.parentDroppable.element).append(this.element);
-                    this.element.style.width = '100%';
-                    this.element.style.left = 0;
+                    this.element.style.width = '85%';
+                    this.element.style.left = 'calc(var(--bs-gutter-x) * .5)';
                     this.element.style.top = 0;
-                    draggable.element.style.zIndex = 0;
+                    draggable.element.style.zIndex = 1;
                 }
                 Draggable.animationPlaying = false;
             });

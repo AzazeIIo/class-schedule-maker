@@ -8,9 +8,11 @@ $(document).ready( function() {
 
     $.each($('.schoolPeriod'), function (i, e) { 
         const droppable = new Droppable(e);
-        const id = JSON.parse(localStorage.getItem('schedule'))[i];
-        droppable.set(id);
-    });    
+        if(localStorage.getItem('schedule')) {
+            const id = JSON.parse(localStorage.getItem('schedule'))[i];
+            droppable.set(id);
+        }
+    });
 });
 
 $('.classCard').on('mousedown', function(e) {
@@ -21,7 +23,6 @@ $('#saveBtn').on('click', function() {
     Droppable.save();
 });
 
-$('#resetBtn').on('click', function() {
-    console.log('resetting');
-    
+$('#deleteBtn').on('click', function() {
+    Droppable.delete();
 });
