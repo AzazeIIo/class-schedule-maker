@@ -66,6 +66,7 @@
     outline: 1px solid black;
     line-height: 90%;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .col-2 {

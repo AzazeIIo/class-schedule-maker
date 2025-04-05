@@ -46,6 +46,11 @@ export class Draggable {
             Draggable.mouseOffsetX = e.offsetX;
             Draggable.mouseOffsetY = e.offsetY;
 
+            const rect = this.element.getBoundingClientRect();
+            const parentRect = this.original.parentElement.parentElement.getBoundingClientRect();
+            this.schedulePosX = rect.left - parentRect.left;
+            this.schedulePosY = rect.top - parentRect.top;
+
             $(this.original.parentElement).append(this.element);
             this.element.style.left = this.schedulePosX + 'px';
             this.element.style.top = this.schedulePosY + 'px';
@@ -103,10 +108,8 @@ export class Draggable {
 
         const rect = elem.getBoundingClientRect();
         const parentRect = draggable.element.parentElement.parentElement.getBoundingClientRect();
-        const parentOffsetX = parentRect.left;
-        const parentOffsetY = parentRect.top;
-        this.schedulePosX = rect.left - parentOffsetX;
-        this.schedulePosY = rect.top - parentOffsetY;
+        this.schedulePosX = rect.left - parentRect.left;
+        this.schedulePosY = rect.top - parentRect.top;
         
         Draggable.currentlyDragged = null;
         Draggable.animationPlaying = true;
