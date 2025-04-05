@@ -1,14 +1,31 @@
 import { Draggable } from "./draggable.js";
 
 export class Droppable {
-    static elements = [];
+    static instances = [];
 
     element;
     occupied;
+    childDraggable;
 
     constructor(elem) {
         this.element = elem;
         this.occupied = false;
-        Droppable.elements.push(this.element);
+        this.childDraggable = null;
+        Droppable.instances.push(this);
+    }
+
+    set(id) {
+        console.log(id);
+        
+    }
+
+    static save() {
+        const draggables = [];
+
+        Droppable.instances.forEach(instance => {
+            draggables.push(instance.childDraggable);
+        });
+
+        localStorage.setItem("schedule", JSON.stringify(draggables));
     }
 }

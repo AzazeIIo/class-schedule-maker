@@ -5,19 +5,20 @@ $(document).ready( function() {
     $(this).on('mousemove', function(e) {
         Draggable.mouseMove(e);
     });
+
+    $.each($('.schoolPeriod'), function (i, e) { 
+        const droppable = new Droppable(e);
+        const id = JSON.parse(localStorage.getItem('schedule'))[i];
+        droppable.set(id);
+    });    
 });
 
 $('.classCard').on('mousedown', function(e) {
     new Draggable(e);
 });
 
-$.each($('.schoolPeriod'), function (i, e) { 
-    new Droppable(e);
-});
-
 $('#saveBtn').on('click', function() {
-    console.log('saving');
-    
+    Droppable.save();
 });
 
 $('#resetBtn').on('click', function() {

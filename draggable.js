@@ -35,6 +35,7 @@ export class Draggable {
 
     clone(target) {
         const draggableElement = target.cloneNode(true);
+        draggableElement.removeAttribute("id");
         draggableElement.style.position = 'absolute';
         target.after(draggableElement);
 
@@ -71,19 +72,22 @@ export class Draggable {
 
             const mouseElements = document.elementsFromPoint(centerX, centerY);
             
-            for (const elem of mouseElements) {
-                if(Droppable.elements.includes(elem) ) {
-                    if(elem.occupied) {
+            for(const instance of Droppable.instances) {
+                if(mouseElements.includes(instance.element)) {
+                    if(instance.occupied) {
                         return this.cancelling(true);
                     }
                     if(this.parentDroppable) {
                         this.parentDroppable.occupied = false;
+                        this.parentDroppable.childDraggable = null;
                     }
-                    this.parentDroppable = elem;
-                    elem.occupied = true;
-                    return this.dropping(elem);
+                    this.parentDroppable = instance;
+                    instance.occupied = true;
+                    instance.childDraggable = this.original.id;
+                    
+                    return this.dropping(instance);
                 }
-            }
+            };
             return this.cancelling(false);
         }
     };
@@ -105,10 +109,10 @@ export class Draggable {
         }
     };
 
-    dropping(elem) {
+    dropping(droppable) {
         const draggable = this;
 
-        const rect = elem.getBoundingClientRect();
+        const rect = droppable.element.getBoundingClientRect();
         const parentRect = draggable.element.parentElement.parentElement.getBoundingClientRect();
         this.schedulePosX = rect.left - parentRect.left;
         this.schedulePosY = rect.top - parentRect.top;
@@ -135,6 +139,7 @@ export class Draggable {
         this.element.style.transform = 'scale(100%)';
 
         if(this.parentDroppable && insideSchedule) {
+            
             $(this.element).animate({
                 left: this.schedulePosX,
                 top: this.schedulePosY
@@ -156,7 +161,7 @@ export class Draggable {
             this.element.classList.add('glowGreen')
             this.element.addEventListener('animationend', () => {
                 this.element.classList.remove('glowGreen')
-                $(this.parentDroppable).append(this.element);
+                $(this.parentDroppable.element).append(this.element);
                 this.element.style.width = '100%';
                 this.element.style.left = 0;
                 this.element.style.top = 0;
@@ -166,6 +171,7 @@ export class Draggable {
         } else {
             if(this.parentDroppable && destroy) {
                 this.parentDroppable.occupied = false;
+                this.parentDroppable.childDraggable = null;
             }
             this.element.classList.add('glowRed')
             this.element.addEventListener('animationend', () => {
@@ -173,7 +179,7 @@ export class Draggable {
                     $(this.element).remove();
                 } else {
                     this.element.classList.remove('glowRed');
-                    $(this.parentDroppable).append(this.element);
+                    $(this.parentDroppable.element).append(this.element);
                     this.element.style.width = '100%';
                     this.element.style.left = 0;
                     this.element.style.top = 0;
