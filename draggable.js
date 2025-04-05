@@ -29,6 +29,7 @@ export class Draggable {
             this.element.style.left = this.original.offsetLeft + 'px';
             this.element.style.top = this.original.offsetTop + 'px';
             this.element.style.zIndex = 1;
+            this.element.style.transform = 'scale(110%)';
         }
     }
 
@@ -56,6 +57,7 @@ export class Draggable {
             this.element.style.top = this.schedulePosY + 'px';
             this.element.style.width = '16.66666667%';
             this.element.style.zIndex = 1;
+            this.element.style.transform = 'scale(110%)';
         } else if (e.button == 2 && Draggable.currentlyDragged) {
             Draggable.currentlyDragged.cancelling(false);
         }
@@ -110,6 +112,8 @@ export class Draggable {
         const parentRect = draggable.element.parentElement.parentElement.getBoundingClientRect();
         this.schedulePosX = rect.left - parentRect.left;
         this.schedulePosY = rect.top - parentRect.top;
+
+        this.element.style.transform = 'scale(100%)';
         
         Draggable.currentlyDragged = null;
         Draggable.animationPlaying = true;
@@ -127,6 +131,8 @@ export class Draggable {
         
         Draggable.currentlyDragged = null;
         Draggable.animationPlaying = true;
+        
+        this.element.style.transform = 'scale(100%)';
 
         if(this.parentDroppable && insideSchedule) {
             $(this.element).animate({

@@ -16,13 +16,13 @@
 
 @keyframes glow-green {
     0% {
-      box-shadow: 0 0 0 0 #169b18;
+        box-shadow: 0 0 0 0 #169b18;
     }
     25% {
-      box-shadow: 0 0 10px 10px #169b18;
+        box-shadow: 0 0 5px 5px #169b18;
     }
     75% {
-        box-shadow: 0 0 10px 10px #169b18;
+        box-shadow: 0 0 5px 5px #169b18;
     }
     100% {
         box-shadow: 0 0 0 0 #169b18;
@@ -31,16 +31,28 @@
 
 @keyframes glow-red {
     0% {
-      box-shadow: 0 0 0 0 #c93025;
+        box-shadow: 0 0 0 0 #c93025;
+    }
+    17% {
+        transform: translate(-4%);
     }
     25% {
-      box-shadow: 0 0 10px 10px #c93025;
+        box-shadow: 0 0 5px 5px #c93025;
+        transform: translate(4%);
+    }
+    50% {
+        transform: translate(-2%);
     }
     75% {
-        box-shadow: 0 0 10px 10px #c93025;
+        box-shadow: 0 0 5px 5px #c93025;
+        transform: translate(2%);
+    }
+    83% {
+        transform: translate(-1%);
     }
     100% {
         box-shadow: 0 0 0 0 #c93025;
+        transform: translate(0%);
     }
 }
 
