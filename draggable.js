@@ -14,26 +14,39 @@ export class Draggable {
     relativeOffsetY;
     parentDroppable;
     
-    constructor(e) {
-        if(e.button == 0 && !Draggable.animationPlaying) {
-            this.original = e.target;
-
-            this.element = this.clone(this.original);
+    constructor(e, droppable) {
+        if(droppable) {
+            this.original = document.getElementById(e);
+            this.element = Draggable.clone(this.original);
             this.element.addEventListener('mousedown', (ev) => this.mouseDown(ev));
             this.element.addEventListener('mouseup', (ev) => this.mouseUp(ev));
-
-            Draggable.currentlyDragged = this;
-            Draggable.mouseOffsetX = e.offsetX;
-            Draggable.mouseOffsetY = e.offsetY;
-
-            this.element.style.left = this.original.offsetLeft + 'px';
-            this.element.style.top = this.original.offsetTop + 'px';
-            this.element.style.zIndex = 1;
-            this.element.style.transform = 'scale(110%)';
+            this.parentDroppable = droppable;
+            $(this.parentDroppable.element).append(this.element);
+            this.element.style.width = '100%';
+            this.element.style.left = 0;
+            this.element.style.top = 0;
+        } else {
+            if(e.button == 0 && !Draggable.animationPlaying) {
+                this.original = e.target;
+                
+                this.element = Draggable.clone(this.original);
+                this.element.addEventListener('mousedown', (ev) => this.mouseDown(ev));
+                this.element.addEventListener('mouseup', (ev) => this.mouseUp(ev));
+                
+                Draggable.currentlyDragged = this;
+                Draggable.mouseOffsetX = e.offsetX;
+                Draggable.mouseOffsetY = e.offsetY;
+                
+                this.element.style.left = this.original.offsetLeft + 'px';
+                this.element.style.top = this.original.offsetTop + 'px';
+                this.element.style.zIndex = 1;
+                this.element.style.transform = 'scale(110%)';
+            }
         }
+        return this.element.id;
     }
 
-    clone(target) {
+    static clone(target) {
         const draggableElement = target.cloneNode(true);
         draggableElement.removeAttribute("id");
         draggableElement.style.position = 'absolute';

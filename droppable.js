@@ -15,8 +15,10 @@ export class Droppable {
     }
 
     set(id) {
-        console.log(id);
-        
+        if(id != null) {
+            new Draggable(String(id), this);
+            this.childDraggable = id;
+        }
     }
 
     static save() {
