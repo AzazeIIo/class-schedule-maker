@@ -1,6 +1,9 @@
 import { Draggable } from "./draggable.js";
 import { Droppable } from "./droppable.js";
 
+const saveToast = document.getElementById('saveToast');
+const deleteToast = document.getElementById('deleteToast');
+
 $(document).ready( function() {
     $(this).on('mousemove', function(e) {
         Draggable.mouseMove(e);
@@ -21,8 +24,12 @@ $('.classCard').on('mousedown', function(e) {
 
 $('#saveBtn').on('click', function() {
     Droppable.save();
+    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(saveToast);
+    toastBootstrap.show();
 });
 
 $('#deleteBtn').on('click', function() {
     Droppable.delete();
+    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(deleteToast);
+    toastBootstrap.show();
 });

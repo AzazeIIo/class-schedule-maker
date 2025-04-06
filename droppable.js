@@ -18,6 +18,7 @@ export class Droppable {
         if(id != null) {
             new Draggable(String(id), this);
             this.childDraggable = id;
+            this.occupied = true;
         }
     }
 
