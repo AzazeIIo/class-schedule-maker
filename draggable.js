@@ -22,9 +22,9 @@ export class Draggable {
             this.element.addEventListener('mouseup', (ev) => this.mouseUp(ev));
             this.parentDroppable = droppable;
             $(this.parentDroppable.element).append(this.element);
-            this.element.style.width = '85%';
+            this.element.style.width = 'calc(100% - 24px)';
             this.element.style.left = 'calc(var(--bs-gutter-x) * .5)';
-            this.element.style.top = 0;
+            this.element.style.top = '0.8vh';
             return this.element.id;
         } else {
             if(e.button == 0 && !Draggable.animationPlaying) {
@@ -128,7 +128,7 @@ export class Draggable {
         const rect = droppable.element.getBoundingClientRect();
         const parentRect = draggable.element.parentElement.parentElement.getBoundingClientRect();
         this.schedulePosX = rect.left - parentRect.left;
-        this.schedulePosY = rect.top - parentRect.top;
+        this.schedulePosY = rect.top - parentRect.top + ($(window).height() * 0.008);
 
         this.element.style.transform = 'scale(100%)';
         
@@ -154,7 +154,7 @@ export class Draggable {
         if(this.parentDroppable && insideSchedule) {
             
             $(this.element).animate({
-                left: this.schedulePosX,
+                left: this.schedulePosX - 12,
                 top: this.schedulePosY
             }, 500, "swing", function() {
                 draggable.finishedAnimation(draggable, false, false);
@@ -175,9 +175,9 @@ export class Draggable {
             this.element.addEventListener('animationend', () => {
                 this.element.classList.remove('glowGreen')
                 $(this.parentDroppable.element).append(this.element);
-                this.element.style.width = '85%';
+                this.element.style.width = 'calc(100% - 24px)';
                 this.element.style.left = 'calc(var(--bs-gutter-x) * .5)';
-                this.element.style.top = 0;
+                this.element.style.top = '0.8vh';
                 draggable.element.style.zIndex = 1;
                 Draggable.animationPlaying = false;
             });
@@ -186,17 +186,19 @@ export class Draggable {
                 this.parentDroppable.occupied = false;
                 this.parentDroppable.childDraggable = null;
             }
+            if(!destroy) {
+                $(this.parentDroppable.element).append(this.element);
+                this.element.style.width = 'calc(100% - 24px)';
+                this.element.style.left = 'calc(var(--bs-gutter-x) * .5)';
+                this.element.style.top = '0.8vh';
+                draggable.element.style.zIndex = 1;
+            }
             this.element.classList.add('glowRed')
             this.element.addEventListener('animationend', () => {
                 if(destroy) {
                     $(this.element).remove();
                 } else {
                     this.element.classList.remove('glowRed');
-                    $(this.parentDroppable.element).append(this.element);
-                    this.element.style.width = '85%';
-                    this.element.style.left = 'calc(var(--bs-gutter-x) * .5)';
-                    this.element.style.top = 0;
-                    draggable.element.style.zIndex = 1;
                 }
                 Draggable.animationPlaying = false;
             });
